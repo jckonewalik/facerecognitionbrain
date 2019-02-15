@@ -36,7 +36,8 @@ class App extends Component {
       imageUrl: "",
       box: {},
       route: "signin",
-      isSignedIn: false
+      isSignedIn: false,
+      user: {}
     };
   }
 
@@ -56,6 +57,10 @@ class App extends Component {
 
   displayFaceBox = box => {
     this.setState({ box: box });
+  };
+
+  loadUser = user => {
+    this.setState({ user: user });
   };
 
   onInputChange = event => {
@@ -94,7 +99,7 @@ class App extends Component {
         {route === "home" ? (
           <div>
             <Logo />
-            <Rank />
+            <Rank loggedUser={this.state.user} />
             <ImageLinkForm
               onButtonSubmit={this.onButtonSubmit}
               onInputChange={this.onInputChange}
@@ -102,9 +107,12 @@ class App extends Component {
             <FaceRecognition box={box} imageUrl={imageUrl} />
           </div>
         ) : route === "signin" ? (
-          <Sigin onRouteChange={this.onRouteChange} />
+          <Sigin loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
         ) : (
-          <Register onRouteChange={this.onRouteChange} />
+          <Register
+            onRegister={this.loadUser}
+            onRouteChange={this.onRouteChange}
+          />
         )}
       </div>
     );
